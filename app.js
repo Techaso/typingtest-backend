@@ -23,25 +23,28 @@ app.get('/api/generate-text', async (req, res) => {
         const userPrompt = req.query.prompt || '';
         
         let prompt = '';
-        
+        const adjustedWordLimit = wordLimit;
         switch (type) {
             case 'vocabulary':
-                prompt = `Generate a vocabulary list with exactly ${wordLimit/5} words in output text, in the following format: "word1 : definition. \n word2 : definition." and so on. 
+                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit / 5;
+                prompt = `Generate a vocabulary list with exactly ${adjustedWordLimit} words in the following format: "word1 : definition. \n word2 : definition." and so on. 
                 Choose words from IELTS Vocabulary. Provide clear, simple definitions. Provide plain text only.`;
                 break;
                 
             case 'gk':
-                prompt = `Write a short, informative passage about general knowledge with exactly ${wordLimit} words. 
+                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit;
+                prompt = `Write a short, informative passage about general knowledge with exactly ${adjustedWordLimit} words. 
                 Include interesting facts about history, science, geography, or current affairs. Each fact start in a new line.
                 The content should be educational, factually very accurate, and written in clear, simple language. Provide plain text only.`;
                 break;
                 
             case 'custom':
+                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit / 5;
                 if (userPrompt) {
                     prompt = `Create text based on the following prompt: "${userPrompt}". 
-                    The text should be approximately ${wordLimit} words long and use clear, straightforward language. Provide plain text only.`;
+                    The text should be approximately ${adjustedWordLimit} words long and use clear, straightforward language. Provide plain text only.`;
                 } else {
-                    prompt = `Write engaging content that's exactly ${wordLimit} words long in clear and simple language. Write each sample/example in new line. Provide plain text only.`;
+                    prompt = `Write engaging content that's exactly ${adjustedWordLimit} words long in clear and simple language. Write each sample/example in new line. Provide plain text only.`;
                 }
                 break;
                 
