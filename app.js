@@ -23,7 +23,7 @@ app.get('/api/generate-text', async (req, res) => {
         const userPrompt = req.query.prompt || '';
         
         let prompt = '';
-        const adjustedWordLimit = wordLimit;
+        let adjustedWordLimit = wordLimit;
         switch (type) {
             case 'vocabulary':
                 adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit / 5;
@@ -39,7 +39,7 @@ app.get('/api/generate-text', async (req, res) => {
                 break;
                 
             case 'custom':
-                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit / 5;
+                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit;
                 if (userPrompt) {
                     prompt = `Create text based on the following prompt: "${userPrompt}". 
                     The text should be approximately ${adjustedWordLimit} words long and use clear, straightforward language. Provide plain text only.`;
@@ -50,7 +50,8 @@ app.get('/api/generate-text', async (req, res) => {
                 
             case 'story':
             default:
-                prompt = `Write a short, engaging story with exactly ${wordLimit} words. 
+                adjustedWordLimit = wordLimit >= 15000 ? 500 : wordLimit;
+                prompt = `Write a short, engaging story with exactly ${adjustedWordLimit} words. 
                 The story should captivate the reader with a compelling narrative, interesting characters, and a touch of intrigue or emotion. 
                 Use vivid language and create a sense of wonder or suspense. The story should have a clear beginning, middle, and end. 
                 Focus on creating an interesting and memorable experience for the reader. Write in clear and simple language. Provide plain text only.`;
