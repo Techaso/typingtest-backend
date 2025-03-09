@@ -28,23 +28,23 @@ app.get('/api/generate-text', async (req, res) => {
             case 'vocabulary':
                 adjustedWordLimit = wordLimit >= 15000 ? 200 : wordLimit / 5;
                 prompt = `Generate a vocabulary list with exactly ${adjustedWordLimit} words in the following format: "word1 : definition. \n word2 : definition." and so on. 
-                Choose words from IELTS Vocabulary. Provide clear, simple definitions. Provide plain text only.`;
+                Choose words from IELTS Vocabulary. Provide clear, simple definitions. Provide plain text only. Do not include any introductory sentences or commentary.`;
                 break;
                 
             case 'gk':
                 adjustedWordLimit = wordLimit >= 15000 ? 200 : wordLimit;
                 prompt = `Write a short, informative passage about general knowledge with exactly ${adjustedWordLimit} words. 
                 Include interesting facts about history, science, geography, or current affairs. Each fact start in a new line.
-                The content should be educational, factually very accurate, and written in clear, simple language. Provide plain text only.`;
+                The content should be educational, factually very accurate, and written in clear, simple language. Provide plain text only and do not include any introductory remarks.`;
                 break;
                 
             case 'custom':
                 adjustedWordLimit = wordLimit >= 15000 ? 200 : wordLimit;
                 if (userPrompt) {
                     prompt = `Create text based on the following prompt: "${userPrompt}". 
-                    The text should be approximately ${adjustedWordLimit} words long and use clear, straightforward language. Provide plain text only.`;
+                    The text should be approximately ${adjustedWordLimit} words long and use clear, straightforward language. Provide plain text only. Do not include any introductory sentences or additional commentary.`;
                 } else {
-                    prompt = `Write engaging content that's exactly ${adjustedWordLimit} words long in clear and simple language. Write each sample/example in new line. Provide plain text only.`;
+                    prompt = `Write engaging content that's exactly ${adjustedWordLimit} words long in clear and simple language. Write each sample/example in new line. Provide plain text only. Do not include introductory remarks.`;
                 }
                 break;
                 
@@ -54,7 +54,7 @@ app.get('/api/generate-text', async (req, res) => {
                 prompt = `Write a short, engaging story with exactly ${adjustedWordLimit} words. 
                 The story should captivate the reader with a compelling narrative, interesting characters, and a touch of intrigue or emotion. 
                 Use vivid language and create a sense of wonder or suspense. The story should have a clear beginning, middle, and end. 
-                Focus on creating an interesting and memorable experience for the reader. Write in clear and simple language. Provide plain text only.`;
+                Focus on creating an interesting and memorable experience for the reader. Write in clear and simple language. Provide plain text only without any introductory sentences.`;
                 break;
         }
         
